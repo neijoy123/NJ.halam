@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nijoy Halam | Portfolio</title>
+    <style>
+        /* Global Styles & Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: #0f172a;
+            color: #f8fafc;
+            overflow-x: hidden;
+        }
+
+        /* --- LIVE BACKGROUND EFFECT --- */
+        .live-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            background: radial-gradient(circle at 50% 50%, #1e293b 0%, #0f172a 100%);
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(56, 189, 248, 0.2);
+            animation: float Up 12s infinite linear;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            50% { opacity: 0.8; }
+            100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            padding: 20px 10%;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        nav .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #38bdf8;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav ul li a {
+            color: #cbd5e1;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: #38bdf8;
+        }
+
+        /* Section Setup */
+        section {
+            padding: 100px 10%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            text-align: center;
+            color: #38bdf8;
+            position: relative;
+        }
+
+        h2::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background: #38bdf8;
+            margin: 10px auto 0;
+            border-radius: 2px;
+        }
+
+        /* --- HOME SECTION --- */
+        #home {
+            text-align: center;
+            align-items: center;
+        }
+
+        #home h1 {
+            font-size: 4rem;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, #f8fafc, #38bdf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        #home h3 {
+            font-size: 1.8rem;
+            color: #94a3b8;
+            margin-bottom: 20px;
+            font-weight: 400;
+        }
+
+        #home p {
+            max-width: 600px;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #cbd5e1;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #38bdf8;
+            color: #0f172a;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 5px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(56, 189, 248, 0.3);
+        }
+
+        /* --- ABOUT SECTION & 3D FLASHCARDS --- */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: start;
+        }
+
+        .info-box {
+            background: rgba(30, 41, 59, 0.5);
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .info-box p {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            color: #cbd5e1;
+        }
+
+        .info-box strong {
+            color: #38bdf8;
+        }
+
+        .flashcard-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        /* 3D Flashcard Effect */
+        .flashcard {
+            background: transparent;
+            width: 100%;
+            height: 120px;
+            perspective: 1000px;
+        }
+
+        .flashcard-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+
+        .flashcard:hover .flashcard-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .card-front {
+            background: #1e293b;
+            color: #f8fafc;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            font-weight: 600;
+        }
+
+        .card-back {
+            background: #38bdf8;
+            color: #0f172a;
+            transform: rotateY(180deg);
+            font-weight: bold;
+        }
+
+        /* --- PROJECTS SECTION --- */
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .project-card {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(255,255,255,0.05);
+            padding: 25px;
+            border-radius: 12px;
+            transition: transform 0.3s, border-color 0.3s;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            border-color: #38bdf8;
+        }
+
+        .project-card h3 {
+            color: #38bdf8;
+            margin-bottom: 10px;
+        }
+
+        /* --- CONTACT SECTION --- */
+        .contact-container {
+            max-width: 600px;
+            margin: 0 auto;
+            width: 100%;
+            background: rgba(30, 41, 59, 0.5);
+            padding: 40px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            background: #0f172a;
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #f8fafc;
+            border-radius: 6px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            border-color: #38bdf8;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .about-content { grid-template-columns: 1fr; }
+            #home h1 { font-size: 2.8rem; }
+            nav ul { display: none; } /* Simplified for single file example */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Live Background Container -->
+    <div class="live-bg" id="liveBg"></div>
+
+    <!-- Navbar -->
+    <nav>
+        <div class="logo">NH</div>
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- 1. HOME SECTION -->
+    <section id="home">
+        <h1>Hi, I'm Nijoy Halam</h1>
+        <h3>BCA Student | Aspiring Software Developer | Bangalore University</h3>
+        <p>I am a Bachelor of Computer Applications (BCA) student passionate about programming, web development, and software engineering. I enjoy learning new technologies and building practical projects.</p>
+        <a href="#contact" class="btn">Get In Touch</a>
+    </section>
+
+    <!-- 2. ABOUT ME SECTION -->
+    <section id="about">
+        <h2>About Me</h2>
+        <div class="about-content">
+            <!-- Details Box -->
+            <div class="info-box">
+                <p><strong>Name:</strong> Nijoy Halam</p>
+                <p><strong>Course:</strong> BCA (Bachelor of Computer Applications)</p>
+                <p><strong>University:</strong> Bangalore University</p>
+                <p><strong>Location:</strong> Bengaluru, Karnataka</p>
+            </div>
+            
+            <!-- 3D Flashcards for Interests -->
+            <div>
+                <h3 style="margin-bottom: 20px; color: #94a3b8; font-size: 1.2rem;">Interests (Hover to Flip!)</h3>
+                <div class="flashcard-grid">
+                    
+                    <!-- Card 1 -->
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="card-front">Python Programming</div>
+                            <div class="card-back">Building logic, scripts & clean code.</div>
+                        </div>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="card-front">Web Development</div>
+                            <div class="card-back">Creating interactive & beautiful UIs.</div>
+                        </div>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="card-front">Machine Learning</div>
+                            <div class="card-back">Analyzing data & smart algorithms.</div>
+                        </div>
+                    </div>
+
+                    <!-- Card 4 -->
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="card-front">Software Engineering</div>
+                            <div class="card-back">System design & agile architectures.</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. PROJECTS SECTION -->
+    <section id="projects">
+        <h2>Projects</h2>
+        <div class="project-grid">
+            <div class="project-card">
+                <h3>Local Server Finder</h3>
+                <p>An application developed to scan and discover local network servers dynamically with ease.</p>
+            </div>
+            <div class="project-card">
+                <h3>Blockchain Voting System</h3>
+                <p>A secure, decentralized e-voting portal conceptualized for transparent digital elections.</p>
+            </div>
+            <div class="project-card">
+                <h3>Portfolio Website</h3>
+                <p>This interactive web space showcasing skills with modern CSS transitions and live animation wrappers.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. CONTACT SECTION -->
+    <section id="contact">
+        <h2>Contact Me</h2>
+        <div class="contact-container">
+            <form onsubmit="event.preventDefault(); alert('Message sent successfully!');">
+                <div class="form-group">
+                    <input type="text" placeholder="Your Name" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" placeholder="Your Email" required>
+                </div>
+                <div class="form-group">
+                    <textarea rows="5" placeholder="Your Message" required></textarea>
+                </div>
+                <button type="submit" class="btn" style="border: none; cursor: pointer; width: 100%;">Send Message</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        &copy; 2026 Nijoy Halam. All rights reserved.
+    </footer>
+
+    <!-- JavaScript for Dynamic Live Background Particles -->
+    <script>
+        const bg = document.getElementById('liveBg');
+        const particleCount = 30;
+
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            
+            // Random styling for authentic live flow
+            const size = Math.random() * 6 + 2;
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            
+            particle.style.left = `${Math.random() * 100}vw`;
+            particle.style.animationDelay = `${Math.random() * 8}s`;
+            particle.style.animationDuration = `${Math.random() * 6 + 6}s`;
+            
+            bg.appendChild(particle);
+        }
+    </script>
+</body>
+</html>
